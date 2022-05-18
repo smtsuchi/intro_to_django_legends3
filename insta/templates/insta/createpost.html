@@ -8,7 +8,7 @@
         <input type="text" name='img_url' class="form-control">
     </div>
     <div class="mb-3 d-none">
-        <input type="text" name='author' class="form-control" id="author" value="1">
+        <input type="text" name='author' class="form-control" id="author" value="{{ request.user.id }}">
     </div>
     <div class="mb-3">
         <label for="caption" class="form-label">Caption</label>

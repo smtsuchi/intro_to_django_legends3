@@ -1,11 +1,15 @@
 {% extends 'insta/base.html' %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" class="col-6 border rounded p-4 mx-auto">
     {% csrf_token %}
     <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" id="username" name="username">
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email">
     </div>
     <div class="mb-3">
         <label for="password1" class="form-label">Password</label>
@@ -20,5 +24,6 @@
     {% endif %}
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<div class="mt-2 text-center">Already have an account? <a class="text-decoration-none" href="{% url 'login' %}">Sign In</a></div>
 {% endblock %}
 
