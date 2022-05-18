@@ -1,25 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
+# import all of your models
+from .models import Post
+
+# import all of your forms
+from .forms import PostForm
+from django.contrib.auth.forms import UserCreationForm
+
+# import extra functionality here
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    # return HttpResponse('Testing!! hello world')
-    # dummy code, mimicking a database
-    posts = [
-        {
-            'author': "Shoha",
-            'caption': 'THIS IS MY BIKE',
-            'img_url': 'https://media.wired.com/photos/61afb905d184762c75e00411/master/pass/Gear-Jackbrabbit-Bike-Yellow-top.jpg'
-        }
-        ,
-        {
-            'author': "Frankie",
-            'caption': 'Its spring',
-            'img_url': 'https://www.lovethispic.com/uploaded_images/85888-Spring-Landscape.jpg'
-        }
-        ]
+
+    posts = Post.objects.all()
+    print(posts)
 
     context = {'posts':posts}
+    
     return render(request, 'insta/homepage.html', context=context)
 
 def about(request):
@@ -27,3 +27,51 @@ def about(request):
 
 def contact_us(request):
     return render(request, 'insta/contact_us.html')
+
+def createPost(request):
+    form = PostForm()
+    if request.method == "POST":
+        print('POST req submitted')
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            print('INVALID! :(')
+    else:
+        print('GET req submitted', request.method)   
+
+    return render(request, 'insta/createpost.html', context = {'z': form})
+
+def signMeUp(request):
+    form = UserCreationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            print('INVALID! :(', form.errors)
+    else:
+        print('GET req submitted', request.method)   
+    return render(request, 'insta/signup.html', context={'form': form})
+
+def logMeIn(request):       
+    if request.method == "POST":
+        print(request.POST)
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+
+        user = authenticate(request, username=username, password = password1)
+
+        if user is not None:
+            login(request, user)
+            print(f'{user} is looged in!')
+            return redirect('home')
+        else:
+            print('incoreect username/password')
+    return render(request, 'insta/login.html', context={})
+
+
+def logMeOut(request):
+    logout(request)
+    return redirect('login')

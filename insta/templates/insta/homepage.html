@@ -3,6 +3,8 @@
 {% block content %}
 <h1>THIS IS THE HOMEPAGE</h1>
 
+<button><a href="{% url 'y' %}">+</a></button>
+
     {% for p in posts %}
         <div class="card" style="width: 18rem;">
             <img src="{{ p.img_url }}" class="card-img-top" alt="...">
