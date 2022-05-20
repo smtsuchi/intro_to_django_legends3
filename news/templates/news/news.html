@@ -1,0 +1,23 @@
+{% extends 'insta/base.html' %}
+
+{% block content %}
+
+<form class="d-flex col-6 mx-auto mb-3" method="POST">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="my-search">
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<div class="row mx-auto">
+    {% for a in articles %}
+        <a href="{{ a.url }}" target='_blank' class="card text-dark text-decoration-none col-12 col-sm-3">
+            <img src="{{ a.urlToImage }}" class="card-img-top" alt="{{ a.title }}">
+            <div class="card-body">
+            <h5 class="card-title">{{ a.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{% if a.author %}{{ a.author }} - {% endif %}{{ a.source.name }}</h6>
+            <p class="card-text">{{ a.description }}</p>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

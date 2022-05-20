@@ -1,24 +1,21 @@
 {% extends 'insta/base.html' %}
 
 {% block content %}
-<h1>Create a post</h1>
+<h1>Update post</h1>
 <form method="POST">
     {% csrf_token %}
     <div class="mb-3">
         <label for="img_url" class="form-label">Image URL</label>
-        <input type="text" name='img_url' class="form-control">
+        <input type="text" name='img_url' class="form-control" value="{{ p.img_url }}">
     </div>
     <div class="mb-3 d-none">
         <input type="text" name='author' class="form-control" id="author" value="{{ request.user.id }}">
     </div>
     <div class="mb-3">
         <label for="caption" class="form-label">Caption</label>
-        <input type="text" name="caption" class="form-control">
+        <input type="text" name="caption" class="form-control" value="{{ p.caption }}">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
-
-
 
 {% endblock %}

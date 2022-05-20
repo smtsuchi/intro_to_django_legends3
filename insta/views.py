@@ -101,3 +101,45 @@ def logMeIn(request):
 def logMeOut(request):
     logout(request)
     return redirect('login')
+
+
+
+def singlePost(request, post_id):
+    post = Post.objects.get(id=post_id)
+    return render(request, 'insta/post.html', context={'p':post})
+
+def updatePost(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.author != request.user:
+        messages.warning(request, "You cannot update another user's post!")
+        return redirect('home')
+    form = PostForm(instance=post)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Successfully updated post {post.id}')
+            return redirect('single-post', post_id=post.id)
+        messages.warning(request, f'Invalid post information.. Try again.')
+        return redirect('update-post', post_id=post.id)
+    context = {
+        'p': post,
+        'form': form
+    }
+    return render(request, 'insta/updatepost.html', context=context)
+
+def deletePost(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.author != request.user:
+        messages.warning(request, "You cannot delete another user's post!")
+        return redirect('home')
+    post.delete()
+    messages.success(request, "Your post was successfully deleted.")
+    return redirect('home')
+
+def catch(request, pokemon_id):
+
+    p = PokeDex()
+    p.user_id = request.user.id
+    p.pokemon_id = pokemon_id
+    p.save()

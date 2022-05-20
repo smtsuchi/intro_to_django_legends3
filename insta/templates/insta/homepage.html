@@ -11,13 +11,13 @@
 
 <div class="">
     {% for p in posts %}
-        <div class="card mx-auto" style="width: 18rem;">
+        <a href="{% url 'single-post' post_id=p.id %}" class="card mx-auto text-dark text-decoration-none" style="width: 18rem;">
             <img src="{{ p.img_url }}" class="card-img-top" alt="...">
             <div class="card-body">
             <h5 class="card-title">{{ p.author }}</h5>
             <p class="card-text">{{ p.caption }}</p>
             </div>
-        </div>
+        </a>
     {% endfor %}
 </div>
 {% endblock %}
